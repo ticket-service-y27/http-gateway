@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\HttpGateway.Models\HttpGateway.Models.csproj" />
+      <ProjectReference Include="..\..\src\HttpGateway.Models\HttpGateway.Models.csproj" />
     </ItemGroup>
 
 </Project>

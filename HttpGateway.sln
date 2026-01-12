@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{622B34C9-3FC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpGateway", "src\HttpGateway\HttpGateway.csproj", "{94B7B821-AADF-41DF-B77E-FDE42C229118}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpGateway.Models", "HttpGateway.Models\HttpGateway.Models.csproj", "{C2926BCC-CF3D-4452-95FA-DEA839F357EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpGateway.Models", "src\HttpGateway.Models\HttpGateway.Models.csproj", "{C2926BCC-CF3D-4452-95FA-DEA839F357EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
