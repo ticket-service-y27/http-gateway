@@ -1,3 +1,17 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using HttpGateway;
 
-Console.WriteLine("Hello, World!");
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddPresentationGrpcClients(builder.Configuration)
+    .AddSwaggerSettings()
+    .AddMiddleware()
+    .AddControllers();
+
+WebApplication app = builder.Build();
+app
+    .UseSwaggerSettings()
+    .UseMiddleware();
+app.MapControllers();
+
+app.Run();
