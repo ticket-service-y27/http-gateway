@@ -1,7 +1,7 @@
 using HttpGateway.Models.Users;
 using UserService.Users.Contracts;
 
-namespace HttpGateway.Controllers.GrpcClients;
+namespace HttpGateway.Clients.GrpcClients;
 
 public class UserGrpcClient : IUserGrpcClient
 {
@@ -10,6 +10,18 @@ public class UserGrpcClient : IUserGrpcClient
     public UserGrpcClient(UserService.Users.Contracts.UserService.UserServiceClient client)
     {
         _client = client;
+    }
+
+    public async Task<string> LogInByNicknameAsync(string nickname, string password, CancellationToken ct)
+    {
+        LogInByNicknameResponse response = await _client.LogInByNicknameAsync(
+            new LogInByNicknameRequest
+            {
+                Nickname = nickname,
+                Password = password,
+            },
+            cancellationToken: ct);
+        return response.JwtAccessToken;
     }
 
     public async Task<long> CreateUserAsync(string nickname, string email, string password, CancellationToken ct)
@@ -45,17 +57,5 @@ public class UserGrpcClient : IUserGrpcClient
                 UserId = userId,
             },
             cancellationToken: ct);
-    }
-
-    public async Task<long> LogInByNicknameAsync(string nickname, string password, CancellationToken ct)
-    {
-        LogInByNicknameResponse response = await _client.LogInByNicknameAsync(
-            new LogInByNicknameRequest
-            {
-                Nickname = nickname,
-                Password = password,
-            },
-            cancellationToken: ct);
-        return response.UserId;
     }
 }

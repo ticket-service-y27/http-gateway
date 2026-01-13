@@ -1,4 +1,4 @@
-namespace HttpGateway.Controllers.GrpcClients.Options;
+namespace HttpGateway.Clients.GrpcClients.Options;
 
 public class UserGrpcClientOptions
 {

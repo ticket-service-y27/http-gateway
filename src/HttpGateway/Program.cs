@@ -1,17 +1,23 @@
-﻿using HttpGateway;
+﻿using HttpGateway.Authentication;
+using HttpGateway.Clients;
+using HttpGateway.Middleware;
+using HttpGateway.Swagger;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddPresentationGrpcClients(builder.Configuration)
+    .AddGrpcClients(builder.Configuration)
     .AddSwaggerSettings()
     .AddMiddleware()
+    .AddJwtTokenAuthentication(builder.Configuration)
     .AddControllers();
 
 WebApplication app = builder.Build();
 app
     .UseSwaggerSettings()
     .UseMiddleware();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

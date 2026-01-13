@@ -1,6 +1,6 @@
 using Grpc.Core;
 
-namespace HttpGateway;
+namespace HttpGateway.Middleware;
 
 public class ExceptionMiddleware : IMiddleware
 {
