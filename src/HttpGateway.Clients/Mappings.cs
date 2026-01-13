@@ -1,5 +1,5 @@
 using HttpGateway.Models.Users;
-using UserService.Users.Contracts;
+using Users.UserService.Contracts;
 
 namespace HttpGateway.Clients;
 

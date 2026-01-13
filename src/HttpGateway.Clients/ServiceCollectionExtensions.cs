@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<UserGrpcClientOptions>(configuration.GetSection("GrpcClients:UserService"));
 
-        services.AddGrpcClient<UserService.Users.Contracts.UserService.UserServiceClient>((sp, o) =>
+        services.AddGrpcClient<Users.UserService.Contracts.UserService.UserServiceClient>((sp, o) =>
         {
             UserGrpcClientOptions options = sp.GetRequiredService<IOptions<UserGrpcClientOptions>>().Value;
             o.Address = new Uri(options.Url);

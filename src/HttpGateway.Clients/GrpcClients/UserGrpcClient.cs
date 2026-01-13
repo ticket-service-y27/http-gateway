@@ -1,13 +1,13 @@
 using HttpGateway.Models.Users;
-using UserService.Users.Contracts;
+using Users.UserService.Contracts;
 
 namespace HttpGateway.Clients.GrpcClients;
 
 public class UserGrpcClient : IUserGrpcClient
 {
-    private readonly UserService.Users.Contracts.UserService.UserServiceClient _client;
+    private readonly Users.UserService.Contracts.UserService.UserServiceClient _client;
 
-    public UserGrpcClient(UserService.Users.Contracts.UserService.UserServiceClient client)
+    public UserGrpcClient(Users.UserService.Contracts.UserService.UserServiceClient client)
     {
         _client = client;
     }
