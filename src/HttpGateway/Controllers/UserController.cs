@@ -1,5 +1,6 @@
 using HttpGateway.Clients;
 using HttpGateway.Models.Users;
+using HttpGateway.Models.Users.DtoRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -18,29 +19,41 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
+    [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<string>> LogInByNickname(
-        string nickname,
-        string password,
+        [FromBody] LoginRequest request,
         CancellationToken ct)
     {
-        return await _userGrpcClient.LogInByNicknameAsync(nickname, password, ct);
+        string token = await _userGrpcClient.LogInByNicknameAsync(request.Nickname, request.Password, ct);
+        return Ok(token);
     }
 
     [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(statusCode: StatusCodes.Status409Conflict)]
+    [ProducesResponseType(statusCode: StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<long>> CreateUser(
-        [FromQuery][Required] string nickname,
-        [FromQuery][Required] string email,
-        [FromQuery][Required] string password,
+        [FromBody] CreateUserRequest request,
         CancellationToken ct)
     {
-        return Ok(await _userGrpcClient.CreateUserAsync(nickname, email, password, ct));
+        return Ok(await _userGrpcClient.CreateUserAsync(request.Nickname, request.Email, request.Password, ct));
     }
 
-    [HttpPatch("{userId:long}/role")]
+    [HttpPatch("{userId:long}/role/{role}")]
     [Authorize(Roles = "admin")]
+    [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
     public async Task<ActionResult> AssignUserRole(
         [FromRoute][Required] long userId,
-        [FromQuery][Required] UserRoleDto role,
+        [FromRoute][Required] UserRoleDto role,
         CancellationToken ct)
     {
         await _userGrpcClient.AssignUserRoleAsync(userId, role, ct);
@@ -49,6 +62,10 @@ public class UserController : ControllerBase
 
     [HttpPatch("{userId:long}/block")]
     [Authorize(Roles = "admin")]
+    [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
     public async Task<ActionResult> BlockUserByIdAsync(long userId, CancellationToken ct)
     {
         await _userGrpcClient.BlockUserByIdAsync(userId, ct);

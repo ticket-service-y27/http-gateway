@@ -10,14 +10,15 @@ builder.Services
     .AddSwaggerSettings()
     .AddMiddleware()
     .AddJwtTokenAuthentication(builder.Configuration)
-    .AddControllers();
+    .AddControllers()
+    .AddJson();
 
 WebApplication app = builder.Build();
 app
     .UseSwaggerSettings()
+    .UseAuthentication()
+    .UseAuthorization()
     .UseMiddleware();
-app.UseAuthentication();
-app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
