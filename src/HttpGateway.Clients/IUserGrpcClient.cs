@@ -11,4 +11,6 @@ public interface IUserGrpcClient
     Task AssignUserRoleAsync(long userId, UserRoleDto role, CancellationToken ct);
 
     Task BlockUserByIdAsync(long userId, CancellationToken ct);
+
+    Task UnblockUserByIdAsync(long userId, CancellationToken ct);
 }

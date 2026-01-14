@@ -66,9 +66,22 @@ public class UserController : ControllerBase
     [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]
     [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> BlockUserByIdAsync(long userId, CancellationToken ct)
+    public async Task<ActionResult> BlockUserById(long userId, CancellationToken ct)
     {
         await _userGrpcClient.BlockUserByIdAsync(userId, ct);
+        return Ok();
+    }
+
+    [HttpPatch("{userId:long}/unblock")]
+    [Authorize(Roles = "admin")]
+    [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+    [ProducesResponseType(statusCode: StatusCodes.Status412PreconditionFailed)]
+    public async Task<ActionResult> UnblockUserById(long userId, CancellationToken ct)
+    {
+        await _userGrpcClient.UnblockUserByIdAsync(userId, ct);
         return Ok();
     }
 }

@@ -15,6 +15,7 @@ public static class GrpcStatusCodeMapping
             StatusCode.InvalidArgument => StatusCodes.Status400BadRequest,
             StatusCode.Unauthenticated => StatusCodes.Status401Unauthorized,
             StatusCode.PermissionDenied => StatusCodes.Status403Forbidden,
+            StatusCode.FailedPrecondition => StatusCodes.Status412PreconditionFailed,
             _ => StatusCodes.Status500InternalServerError,
         };
     }

@@ -58,4 +58,14 @@ public class UserGrpcClient : IUserGrpcClient
             },
             cancellationToken: ct);
     }
+
+    public async Task UnblockUserByIdAsync(long userId, CancellationToken ct)
+    {
+        await _client.UnblockUserByIdAsync(
+            new UnblockUserByIdRequest
+            {
+                UserId = userId,
+            },
+            cancellationToken: ct);
+    }
 }
