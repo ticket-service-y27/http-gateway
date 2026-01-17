@@ -13,4 +13,6 @@ public interface IUserGrpcClient
     Task BlockUserByIdAsync(long userId, CancellationToken ct);
 
     Task UnblockUserByIdAsync(long userId, CancellationToken ct);
+
+    Task<UserLoyaltyLevelDto> GetUserLoyaltyLevelAsync(long userId, CancellationToken ct);
 }

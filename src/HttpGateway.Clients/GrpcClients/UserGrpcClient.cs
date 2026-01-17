@@ -68,4 +68,16 @@ public class UserGrpcClient : IUserGrpcClient
             },
             cancellationToken: ct);
     }
+
+    public async Task<UserLoyaltyLevelDto> GetUserLoyaltyLevelAsync(long userId, CancellationToken ct)
+    {
+        GetUserLoyaltyLevelResponse response = await _client.GetUserLoyaltyLevelAsync(
+            new GetUserLoyaltyLevelRequest
+            {
+                UserId = userId,
+            },
+            cancellationToken: ct);
+
+        return response.Level.MapUserLoyaltyLevel();
+    }
 }

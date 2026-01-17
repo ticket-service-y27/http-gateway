@@ -1,6 +1,6 @@
 using HttpGateway.Clients;
 using HttpGateway.Models.Users;
-using HttpGateway.Models.Users.DtoRequests;
+using HttpGateway.Models.Users.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -66,7 +66,9 @@ public class UserController : ControllerBase
     [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]
     [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> BlockUserById(long userId, CancellationToken ct)
+    public async Task<ActionResult> BlockUserById(
+        [FromRoute][Required] long userId,
+        CancellationToken ct)
     {
         await _userGrpcClient.BlockUserByIdAsync(userId, ct);
         return Ok();
@@ -79,9 +81,25 @@ public class UserController : ControllerBase
     [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]
     [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
     [ProducesResponseType(statusCode: StatusCodes.Status412PreconditionFailed)]
-    public async Task<ActionResult> UnblockUserById(long userId, CancellationToken ct)
+    public async Task<ActionResult> UnblockUserById(
+        [FromRoute][Required] long userId,
+        CancellationToken ct)
     {
         await _userGrpcClient.UnblockUserByIdAsync(userId, ct);
         return Ok();
+    }
+
+    [HttpGet("{userId:long}/level")]
+    [Authorize(Roles = "user, admin")]
+    [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+    [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+    [ProducesResponseType(statusCode: StatusCodes.Status502BadGateway)]
+    public async Task<ActionResult<UserLoyaltyLevelDto>> GetUserLoyaltyLevel(
+        [FromRoute][Required] long userId,
+        CancellationToken ct)
+    {
+        return Ok(await _userGrpcClient.GetUserLoyaltyLevelAsync(userId, ct));
     }
 }

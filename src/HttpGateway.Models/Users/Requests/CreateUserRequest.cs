@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HttpGateway.Models.Users.DtoRequests;
+namespace HttpGateway.Models.Users.Requests;
 
 public sealed record CreateUserRequest(
     [Required] string Nickname,
