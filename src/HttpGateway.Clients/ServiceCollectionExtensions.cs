@@ -15,7 +15,6 @@ public static class ServiceCollectionExtensions
         ConfigurationManager configuration)
     {
         services.Configure<UserGrpcClientOptions>(configuration.GetSection("GrpcClients:UserService"));
-
         services.AddGrpcClient<Users.UserService.Contracts.UserService.UserServiceClient>((sp, o) =>
         {
             UserGrpcClientOptions options = sp.GetRequiredService<IOptions<UserGrpcClientOptions>>().Value;
@@ -23,28 +22,38 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped<IUserGrpcClient, UserGrpcClient>();
 
-        services.Configure<EventServiceClientGrpcOptions>(configuration.GetSection("GrpcClients:EventServiceClientGrpcOptions"));
-
+        services.Configure<EventManagerClientGrpcOptions>(configuration.GetSection("GrpcClients:EventManagerService"));
         services.AddGrpcClient<EventManagerGrpcService.EventManagerGrpcServiceClient>((sp, o) =>
         {
-            EventServiceClientGrpcOptions options = sp.GetRequiredService<IOptions<EventServiceClientGrpcOptions>>().Value;
+            EventManagerClientGrpcOptions options = sp.GetRequiredService<IOptions<EventManagerClientGrpcOptions>>().Value;
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<IEventManagerClientGrpc, EventManagerClientGrpc>();
 
+        services.Configure<SeatValidationClientGrpcOptions>(configuration.GetSection("GrpcClients:SeatValidator"));
         services.AddGrpcClient<SeatValidationGrpcService.SeatValidationGrpcServiceClient>((sp, o) =>
         {
-            EventServiceClientGrpcOptions options = sp.GetRequiredService<IOptions<EventServiceClientGrpcOptions>>().Value;
+            SeatValidationClientGrpcOptions options = sp.GetRequiredService<IOptions<SeatValidationClientGrpcOptions>>().Value;
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<ISeatValidationClientGrpc, SeatValidationClientGrpc>();
 
+        services.Configure<VenueManagementClientGrpcOptions>(configuration.GetSection("GrpcClients:VenueManagement"));
         services.AddGrpcClient<VenueGrpcService.VenueGrpcServiceClient>((sp, o) =>
         {
-            EventServiceClientGrpcOptions options = sp.GetRequiredService<IOptions<EventServiceClientGrpcOptions>>().Value;
+            VenueManagementClientGrpcOptions options = sp.GetRequiredService<IOptions<VenueManagementClientGrpcOptions>>().Value;
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<IVenueManagementClientGrpc, VenueManagementClientGrpc>();
+
+        services.Configure<PaymentGrpcClientOptions>(configuration.GetSection("GrpcClients:PaymentService"));
+        services.AddGrpcClient<PaymentService.Grpc.Wallets.WalletService.WalletServiceClient>((sp, o) =>
+        {
+            PaymentGrpcClientOptions options = sp.GetRequiredService<IOptions<PaymentGrpcClientOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
+        services.AddScoped<IWalletGrpcClient, WalletGrpcClient>();
+        services.AddScoped<ITransactionGrpcClient, TransactionGrpcClient>();
 
         return services;
     }

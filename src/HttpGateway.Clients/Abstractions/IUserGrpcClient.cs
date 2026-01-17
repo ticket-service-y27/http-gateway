@@ -1,6 +1,6 @@
 using HttpGateway.Models.Users;
 
-namespace HttpGateway.Clients;
+namespace HttpGateway.Clients.Abstractions;
 
 public interface IUserGrpcClient
 {

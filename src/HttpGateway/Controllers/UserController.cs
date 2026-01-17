@@ -1,4 +1,4 @@
-using HttpGateway.Clients;
+using HttpGateway.Clients.Abstractions;
 using HttpGateway.Models.Users;
 using HttpGateway.Models.Users.Requests;
 using Microsoft.AspNetCore.Authorization;
@@ -90,7 +90,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{userId:long}/level")]
-    [Authorize(Roles = "user, admin")]
+    [Authorize(Roles = "user,admin")]
     [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
     [ProducesResponseType(statusCode: StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(statusCode: StatusCodes.Status403Forbidden)]

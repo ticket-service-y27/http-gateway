@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttpGateway.Controllers;
 
 [ApiController]
-[Route("api/seats")]
+[Route("gateway/seats")]
 public sealed class SeatController : ControllerBase
 {
     private readonly ISeatValidationClientGrpc _seatClient;

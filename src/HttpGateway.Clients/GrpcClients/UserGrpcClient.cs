@@ -1,3 +1,4 @@
+using HttpGateway.Clients.Abstractions;
 using HttpGateway.Models.Users;
 using Users.UserService.Contracts;
 

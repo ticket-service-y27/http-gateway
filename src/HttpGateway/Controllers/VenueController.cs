@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttpGateway.Controllers;
 
 [ApiController]
-[Route("api/venues")]
+[Route("gateway/venues")]
 public sealed class VenueController : ControllerBase
 {
     private readonly IVenueManagementClientGrpc _venueClient;
