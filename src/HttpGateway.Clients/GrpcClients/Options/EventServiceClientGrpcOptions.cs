@@ -1,6 +1,6 @@
 namespace HttpGateway.Clients.GrpcClients.Options;
 
-public class EventManagerClientGrpcOptions
+public class EventServiceClientGrpcOptions
 {
     public string Url { get; init; } = string.Empty;
 }

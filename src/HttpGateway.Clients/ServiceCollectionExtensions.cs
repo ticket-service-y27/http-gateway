@@ -23,29 +23,25 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped<IUserGrpcClient, UserGrpcClient>();
 
-        services.Configure<EventManagerClientGrpcOptions>(configuration.GetSection("GrpcClients:EventManagerService"));
+        services.Configure<EventServiceClientGrpcOptions>(configuration.GetSection("GrpcClients:EventServiceClientGrpcOptions"));
 
         services.AddGrpcClient<EventManagerGrpcService.EventManagerGrpcServiceClient>((sp, o) =>
         {
-            EventManagerClientGrpcOptions options = sp.GetRequiredService<IOptions<EventManagerClientGrpcOptions>>().Value;
+            EventServiceClientGrpcOptions options = sp.GetRequiredService<IOptions<EventServiceClientGrpcOptions>>().Value;
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<IEventManagerClientGrpc, EventManagerClientGrpc>();
 
-        services.Configure<SeatValidationClientGrpcOptions>(configuration.GetSection("GrpcClients:SeatValidator"));
-
         services.AddGrpcClient<SeatValidationGrpcService.SeatValidationGrpcServiceClient>((sp, o) =>
         {
-            SeatValidationClientGrpcOptions options = sp.GetRequiredService<IOptions<SeatValidationClientGrpcOptions>>().Value;
+            EventServiceClientGrpcOptions options = sp.GetRequiredService<IOptions<EventServiceClientGrpcOptions>>().Value;
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<ISeatValidationClientGrpc, SeatValidationClientGrpc>();
 
-        services.Configure<VenueManagementClientGrpcOptions>(configuration.GetSection("GrpcClients:VenueManagement"));
-
         services.AddGrpcClient<VenueGrpcService.VenueGrpcServiceClient>((sp, o) =>
         {
-            VenueManagementClientGrpcOptions options = sp.GetRequiredService<IOptions<VenueManagementClientGrpcOptions>>().Value;
+            EventServiceClientGrpcOptions options = sp.GetRequiredService<IOptions<EventServiceClientGrpcOptions>>().Value;
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<IVenueManagementClientGrpc, VenueManagementClientGrpc>();
