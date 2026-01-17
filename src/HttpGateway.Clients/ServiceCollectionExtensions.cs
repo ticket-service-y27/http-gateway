@@ -15,7 +15,6 @@ public static class ServiceCollectionExtensions
         ConfigurationManager configuration)
     {
         services.Configure<UserGrpcClientOptions>(configuration.GetSection("GrpcClients:UserService"));
-
         services.AddGrpcClient<Users.UserService.Contracts.UserService.UserServiceClient>((sp, o) =>
         {
             UserGrpcClientOptions options = sp.GetRequiredService<IOptions<UserGrpcClientOptions>>().Value;
@@ -23,7 +22,7 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped<IUserGrpcClient, UserGrpcClient>();
 
-        services.Configure<EventServiceClientGrpcOptions>(configuration.GetSection("GrpcClients:EventServiceClientGrpcOptions"));
+        services.Configure<EventServiceClientGrpcOptions>(configuration.GetSection("GrpcClients:EventService"));
 
         services.AddGrpcClient<EventManagerGrpcService.EventManagerGrpcServiceClient>((sp, o) =>
         {
@@ -53,6 +52,12 @@ public static class ServiceCollectionExtensions
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<IWalletGrpcClient, WalletGrpcClient>();
+
+        services.AddGrpcClient<PaymentService.Grpc.WalletTransactions.WalletTransactionsService.WalletTransactionsServiceClient>((sp, o) =>
+        {
+            PaymentGrpcClientOptions options = sp.GetRequiredService<IOptions<PaymentGrpcClientOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
         services.AddScoped<ITransactionGrpcClient, TransactionGrpcClient>();
 
         return services;
