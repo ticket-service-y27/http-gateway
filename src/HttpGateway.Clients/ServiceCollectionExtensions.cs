@@ -48,7 +48,6 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IVenueManagementClientGrpc, VenueManagementClientGrpc>();
 
-
         services.Configure<TicketServiceClientOptions>(configuration.GetSection("GrpcClients:TicketService"));
         services.AddGrpcClient<TicketsService.TicketsServiceClient>((sp, o) =>
         {
