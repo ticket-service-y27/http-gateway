@@ -31,6 +31,16 @@ public static class ServiceCollectionExtensions
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<IEventManagerClientGrpc, EventManagerClientGrpc>();
+
+        services.Configure<SeatValidationClientGrpcOptions>(configuration.GetSection("GrpcClients:SeatValidator"));
+
+        services.AddGrpcClient<SeatValidationGrpcService.SeatValidationGrpcServiceClient>((sp, o) =>
+        {
+            SeatValidationClientGrpcOptions options = sp.GetRequiredService<IOptions<SeatValidationClientGrpcOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
+        services.AddScoped<ISeatValidationClientGrpc, SeatValidationClientGrpc>();
+
         return services;
     }
 }
