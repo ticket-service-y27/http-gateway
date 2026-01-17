@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttpGateway.Controllers;
 
 [ApiController]
-[Route("api/events")]
+[Route("gateway/events")]
 public sealed class EventController : ControllerBase
 {
     private readonly IEventManagerClientGrpc _eventClient;

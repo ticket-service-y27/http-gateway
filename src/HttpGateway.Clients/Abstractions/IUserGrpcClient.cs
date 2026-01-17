@@ -1,6 +1,6 @@
 using HttpGateway.Models.Users;
 
-namespace HttpGateway.Clients;
+namespace HttpGateway.Clients.Abstractions;
 
 public interface IUserGrpcClient
 {
@@ -13,4 +13,6 @@ public interface IUserGrpcClient
     Task BlockUserByIdAsync(long userId, CancellationToken ct);
 
     Task UnblockUserByIdAsync(long userId, CancellationToken ct);
+
+    Task<UserLoyaltyLevelDto> GetUserLoyaltyLevelAsync(long userId, CancellationToken ct);
 }

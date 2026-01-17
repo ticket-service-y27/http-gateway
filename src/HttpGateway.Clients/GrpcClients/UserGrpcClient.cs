@@ -1,3 +1,4 @@
+using HttpGateway.Clients.Abstractions;
 using HttpGateway.Models.Users;
 using Users.UserService.Contracts;
 
@@ -67,5 +68,17 @@ public class UserGrpcClient : IUserGrpcClient
                 UserId = userId,
             },
             cancellationToken: ct);
+    }
+
+    public async Task<UserLoyaltyLevelDto> GetUserLoyaltyLevelAsync(long userId, CancellationToken ct)
+    {
+        GetUserLoyaltyLevelResponse response = await _client.GetUserLoyaltyLevelAsync(
+            new GetUserLoyaltyLevelRequest
+            {
+                UserId = userId,
+            },
+            cancellationToken: ct);
+
+        return response.Level.MapUserLoyaltyLevel();
     }
 }
