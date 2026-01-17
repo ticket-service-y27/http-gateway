@@ -20,5 +20,4 @@ app
     .UseAuthorization()
     .UseMiddleware();
 app.MapControllers();
-
 app.Run();

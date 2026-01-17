@@ -5,6 +5,8 @@ using HttpGateway.Clients.GrpcClients.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using TicketService.Grpc.Promocodes;
+using TicketService.Grpc.Tickets;
 
 namespace HttpGateway.Clients;
 
@@ -43,7 +45,25 @@ public static class ServiceCollectionExtensions
             EventServiceClientGrpcOptions options = sp.GetRequiredService<IOptions<EventServiceClientGrpcOptions>>().Value;
             o.Address = new Uri(options.Url);
         });
+
         services.AddScoped<IVenueManagementClientGrpc, VenueManagementClientGrpc>();
+
+
+        services.Configure<TicketServiceClientOptions>(configuration.GetSection("GrpcClients:TicketService"));
+        services.AddGrpcClient<TicketsService.TicketsServiceClient>((sp, o) =>
+        {
+            TicketServiceClientOptions options = sp.GetRequiredService<IOptions<TicketServiceClientOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
+
+        services.Configure<PromocodeServiceClientOptions>(configuration.GetSection("GrpcClients:PromocodesService"));
+        services.AddGrpcClient<PromocodesService.PromocodesServiceClient>((sp, o) =>
+        {
+            PromocodeServiceClientOptions options = sp.GetRequiredService<IOptions<PromocodeServiceClientOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
+        services.AddScoped<IPromocodeServiceGrpcClient, PromocodeServiceGrpcClient>();
+        services.AddScoped<ITicketServiceGrpcClient, TicketServiceGrpcClient>();
 
         services.Configure<PaymentGrpcClientOptions>(configuration.GetSection("GrpcClients:PaymentService"));
         services.AddGrpcClient<PaymentService.Grpc.Wallets.WalletService.WalletServiceClient>((sp, o) =>
