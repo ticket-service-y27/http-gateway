@@ -41,6 +41,15 @@ public static class ServiceCollectionExtensions
         });
         services.AddScoped<ISeatValidationClientGrpc, SeatValidationClientGrpc>();
 
+        services.Configure<VenueManagementClientGrpcOptions>(configuration.GetSection("GrpcClients:VenueManagement"));
+
+        services.AddGrpcClient<VenueGrpcService.VenueGrpcServiceClient>((sp, o) =>
+        {
+            VenueManagementClientGrpcOptions options = sp.GetRequiredService<IOptions<VenueManagementClientGrpcOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
+        services.AddScoped<IVenueManagementClientGrpc, VenueManagementClientGrpc>();
+
         return services;
     }
 }
