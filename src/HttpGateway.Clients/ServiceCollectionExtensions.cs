@@ -1,3 +1,5 @@
+using EventService.Presentation.Grpc;
+using HttpGateway.Clients.Abstractions;
 using HttpGateway.Clients.GrpcClients;
 using HttpGateway.Clients.GrpcClients.Options;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,33 @@ public static class ServiceCollectionExtensions
             o.Address = new Uri(options.Url);
         });
         services.AddScoped<IUserGrpcClient, UserGrpcClient>();
+
+        services.Configure<EventManagerClientGrpcOptions>(configuration.GetSection("GrpcClients:EventManagerService"));
+
+        services.AddGrpcClient<EventManagerGrpcService.EventManagerGrpcServiceClient>((sp, o) =>
+        {
+            EventManagerClientGrpcOptions options = sp.GetRequiredService<IOptions<EventManagerClientGrpcOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
+        services.AddScoped<IEventManagerClientGrpc, EventManagerClientGrpc>();
+
+        services.Configure<SeatValidationClientGrpcOptions>(configuration.GetSection("GrpcClients:SeatValidator"));
+
+        services.AddGrpcClient<SeatValidationGrpcService.SeatValidationGrpcServiceClient>((sp, o) =>
+        {
+            SeatValidationClientGrpcOptions options = sp.GetRequiredService<IOptions<SeatValidationClientGrpcOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
+        services.AddScoped<ISeatValidationClientGrpc, SeatValidationClientGrpc>();
+
+        services.Configure<VenueManagementClientGrpcOptions>(configuration.GetSection("GrpcClients:VenueManagement"));
+
+        services.AddGrpcClient<VenueGrpcService.VenueGrpcServiceClient>((sp, o) =>
+        {
+            VenueManagementClientGrpcOptions options = sp.GetRequiredService<IOptions<VenueManagementClientGrpcOptions>>().Value;
+            o.Address = new Uri(options.Url);
+        });
+        services.AddScoped<IVenueManagementClientGrpc, VenueManagementClientGrpc>();
 
         return services;
     }
