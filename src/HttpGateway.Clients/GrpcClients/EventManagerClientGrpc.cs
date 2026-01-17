@@ -1,5 +1,6 @@
 using EventService.Presentation.Grpc;
 using HttpGateway.Clients.Abstractions;
+using System.Runtime.CompilerServices;
 
 namespace HttpGateway.Clients.GrpcClients;
 
@@ -29,5 +30,16 @@ public sealed class EventManagerClientGrpc : IEventManagerClientGrpc
         return await _client.UpdateEventAsync(
             request,
             cancellationToken: ct);
+    }
+
+    public async IAsyncEnumerable<EventResponse> GetAllEventsAsync([EnumeratorCancellation] CancellationToken ct)
+    {
+        using Grpc.Core.AsyncServerStreamingCall<EventResponse> call =
+            _client.GetAllEvents(new GetAllEventsRequest(), cancellationToken: ct);
+
+        while (await call.ResponseStream.MoveNext(ct))
+        {
+            yield return call.ResponseStream.Current;
+        }
     }
 }
